@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-import get_24_hours from "./weather_forecast"
+import {get_24_hours, get_days} from "./weather_forecast"
 
 const APIkey = '9088d9c761bd148682fb6518d5bfc0c1'
 let latitude = 55;
@@ -23,6 +23,8 @@ function Weather(props) {
     const setTimestamps = props.setTimestamps;
     const setCoord = props.setCoord;
 
+    const setForecastHours = props.setForecastHours;
+    const setForecastDays = props.setForecastDays;
 
     console.log(`mode=${mode}`);
     // Функция, выводящая текст об ошибке
@@ -48,8 +50,14 @@ function Weather(props) {
 
             setTimestamps(array);
             // сделаем расчет погоды на 24 часа из 9 таймстампов по 3 часа
-            forecast_periods = get_24_hours(array.slice(0, 9));
-            console.log('24 hours:', forecast_periods);
+            const forecast_hours = get_24_hours(array.slice(0, 9));
+            setForecastHours(forecast_hours);
+            console.log('24 hours:', forecast_hours);
+
+            // сделаем расчет погоды на 5 дней из 40 таймстампов по 3 часа
+            const forecast_days = get_days(array);
+            setForecastDays(forecast_days);
+            console.log('5 days:', forecast_days);
 
             console.log('city in response:', res.data.city.name);
             setGeoCity(res.data.city.name);
@@ -105,9 +113,14 @@ function Weather(props) {
 
                 setTimestamps(array);
                 // сделаем расчет погоды на 24 часа из 9 таймстампов по 3 часа
-                forecast_periods = get_24_hours(array.slice(0, 9));
-                console.log('24 hours:', forecast_periods);
+                const forecast_hours = get_24_hours(array.slice(0, 9));
+                setForecastHours(forecast_hours);
+                console.log('24 hours:', forecast_hours);
 
+                // сделаем расчет погоды на 5 дней из 40 таймстампов по 3 часа
+                const forecast_days = get_days(array);
+                setForecastDays(forecast_days);
+                console.log('5 days:', forecast_days);
 
                 console.log('city in response:', res.data.city.name);
             });
@@ -117,7 +130,7 @@ function Weather(props) {
     }
 
     let show_mode = <p>Прогноз на 5 дней:</p>;
-    if (mode == '24hours') {
+    if (mode==0) {
         show_mode = <p>Прогноз на 24 часа:</p>;
     }
 
@@ -125,15 +138,6 @@ function Weather(props) {
         <>
             {/*<p> Выбран город {pref_city} </p>*/}
             {show_mode}
-            {forecast_periods.map(period => (
-                <div>
-                    {period.temp}<br/>
-                    t={period.temp}<br/>
-                    clouds:{period.clouds}<br/>
-                    wind:{period.wind} m/sec<br/>
-                </div>
-            ))
-            }
         </>
     );
 }

@@ -4,8 +4,8 @@ function interpolate(left, right, index){
     return(left+delta/3.0*index);
 }
 
-export function get_24_hours(array) {
-    console.log(`array length = ${array.length}`);
+function get_24_hours(array) {
+    console.log(`get_24_hours: array length = ${array.length}`);
     const weather_24_hours = [];
     weather_24_hours.length = 25;
     //let count=0;
@@ -60,7 +60,66 @@ export function get_24_hours(array) {
     return (weather_24_hours.slice(0, -1));
 }
 
-export default get_24_hours;
+function get_days(array) {
+    console.log(`get_days: array length = ${array.length}`);
+    const weather_days = [];
+    let temp_max = -100;
+    let temp_min = +100;
+    let wind_max = 0;
+    let wind_min = 0;
+    let current_day_name = '';
+    const first_date = new Date(array[0].dt * 1000)
+    const name_size='long'
+    let prev_day_name = first_date.toLocaleString("en", {weekday: name_size});
+    let day_count = 0;
+    let clouds_sum = 0;
+    let dayname = '';
+    array.forEach(elem => {
+            const date = new Date(elem.dt * 1000);
+            dayname = date.toLocaleString("en", {weekday: name_size});
+            day_count++;
+            // новый день недели
+            if (dayname !== prev_day_name) {
+                // создаем объект
+                const day_weather = {
+                    day: prev_day_name,
+                    temp_max: Number(temp_max.toFixed(0)),
+                    temp_min: Number(temp_min.toFixed(0)),
+                    wind_max: Number(wind_max.toFixed(0)),
+                    wind_min: Number(wind_min.toFixed(0)),
+                    clouds: Number((clouds_sum / day_count).toFixed(0)),
+                }
+                weather_days.push(day_weather);
+                // сбросим в исходной состояние
+                temp_max = -100;
+                temp_min = +100;
+                wind_max = 0;
+                wind_min = 0;
+                clouds_sum = 0;
+                day_count = 0;
+                // запомним последний день
+                prev_day_name = dayname;
+            }
+            temp_max = Math.max(temp_max, elem.main.temp_max);
+            temp_min = Math.min(temp_min, elem.main.temp_min);
+            clouds_sum += elem.clouds.all;
+            wind_max = Math.max(wind_max, elem.wind.speed);
+            wind_min = Math.min(wind_min, elem.wind.speed);
+        }
+    );
+    // допишем хвост
+    const day_weather = {
+        day: prev_day_name,
+        temp_max: Number(temp_max.toFixed(0)),
+        temp_min: Number(temp_min.toFixed(0)),
+        wind_max: Number(wind_max.toFixed(0)),
+        wind_min: Number(wind_min.toFixed(0)),
+        clouds: Number((clouds_sum / (day_count+1)).toFixed(0)),
+    }
+    weather_days.push(day_weather);
+    // массив дней погоды
+    return (weather_days);
+}
 
-// const weather_hourly = get_24_hours(periods.slice(0, 9));
-// console.log(weather_hourly);
+ export {get_24_hours, get_days};
+
