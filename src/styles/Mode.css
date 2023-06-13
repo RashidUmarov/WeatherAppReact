@@ -1,0 +1,21 @@
+.mode_container{
+    display: flex;
+    padding: 0px 0px;
+    margin-top: 10px;
+}
+
+.mode{
+    padding: 10px;
+    font-size: 1em;
+    background-color: #dfe8f3;
+    color: rgba(66, 64, 64, 0.95);
+    cursor: pointer;
+}
+
+.mode.selected{
+    padding: 10px;
+    font-size: 1em;
+    background-color: #75a6e3;
+    color: white;
+    cursor: pointer;
+}

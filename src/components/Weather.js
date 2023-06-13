@@ -125,14 +125,14 @@ function Weather(props) {
         }
     }
 
-    let show_mode = <p>Прогноз на 5 дней:</p>;
-    if (mode) {
-        show_mode = <p>Прогноз на 24 часа:</p>;
-    }
+    // let show_mode = <p>Прогноз на 5 дней:</p>;
+    // if (mode) {
+    //     show_mode = <p>Прогноз на 24 часа:</p>;
+    // }
 
     return (
         <>
-            {show_mode}
+            {/*{show_mode}*/}
             {mode ? (
                 <div className={'forecast_container'}>
                     {forecast_hours ? (forecast_hours.map(period => (
