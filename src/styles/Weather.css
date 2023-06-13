@@ -1,11 +1,11 @@
 .forecast_container {
-    padding: 0px 5px;
-    background-color: aquamarine;
+    padding: 3px 5px;
+    background-color: white;
 }
 
 .forecast_hour{
-    padding: 0;
-    margin: 10px 0 auto;
-    background-color: blanchedalmond;
-    max-width: 150px;
+    padding: 5px;
+    margin: 3px 3px;
+    background-color: white;
+    max-width: 120px;
 }

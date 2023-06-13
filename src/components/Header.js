@@ -25,7 +25,7 @@ const Header = (props) => {
     return (
         <Dropdown
             open={open}
-            trigger={<button onClick={handleOpen}>Выбрать город</button>}
+            trigger={<button className={'select_city'} onClick={handleOpen}>Выбрать город</button>}
             menu={cities.map(city => <button
                     onClick={handleMenuClick}>{city}
                 </button>

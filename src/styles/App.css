@@ -1,8 +1,22 @@
-div {
+#root {
     padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: rgb(237, 243, 250);
+    border-radius: 5px;
 }
 
 h1 {
     text-align: center;
     color: darkblue;
+    font-family: "Simonetta", "Trebuchet MS", Arial, sans-serif;
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+p {
+   font-family: "Tahoma", "Trebuchet MS", Arial, sans-serif;
+   color: RGB(21,20,10);
+   font-size: 1em;
 }
