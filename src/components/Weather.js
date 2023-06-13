@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import axios from "axios";
+
+import "../styles/Weather.css";
 
 import {get_24_hours, get_days} from "./weather_forecast"
 
@@ -14,23 +16,22 @@ let selected_city = '';
 let forecast_periods;
 
 function Weather(props) {
+    // координаты объекта
+    const [[lat, long], setCoord] = useState([0, 0]);
+
+    const [forecast_hours, setForecastHours] = useState([])
+    const [forecast_days, setForecastDays] = useState([])
+
     const mode = props.mode;
     const setCityList = props.setCityList;
     const pref_city = props.pref_city;
     const setPrefCity = props.setPrefCity;
-    const setStatus = props.setStatus;
-    const setGeoCity = props.setGeoCity;
-    const setTimestamps = props.setTimestamps;
-    const setCoord = props.setCoord;
 
-    const setForecastHours = props.setForecastHours;
-    const setForecastDays = props.setForecastDays;
 
     console.log(`mode=${mode}`);
     // Функция, выводящая текст об ошибке
     const error = () => {
         console.log('Информация о местоположении недоступна');
-        setStatus('Информация о местоположении недоступна');
     }
 
     // Функция, срабатывающая при успешном получении геолокации
@@ -48,7 +49,6 @@ function Weather(props) {
             let array = res.data.list;
             console.log("list:", array);
 
-            setTimestamps(array);
             // сделаем расчет погоды на 24 часа из 9 таймстампов по 3 часа
             const forecast_hours = get_24_hours(array.slice(0, 9));
             setForecastHours(forecast_hours);
@@ -60,9 +60,7 @@ function Weather(props) {
             console.log('5 days:', forecast_days);
 
             console.log('city in response:', res.data.city.name);
-            setGeoCity(res.data.city.name);
             console.log('city in state:', props.city);
-            setStatus(`Вы в ${res.data.city.name}`);
             setCoord([latitude, longitude]);
             if (!pref_city) {
                 setPrefCity(res.data.city.name);
@@ -80,18 +78,14 @@ function Weather(props) {
     if (!props.city) {
         if ("geolocation" in navigator) {
             console.log("Geolocation available");
-            setStatus("Geolocation available");
         } else {
             console.log("Geolocation is not Available");
-            setStatus("Geolocation is not Available");
         }
 
         if (!navigator.geolocation) {
             console.log('Информация о местоположении недоступна');
-            setStatus('Информация о местоположении недоступна');
         } else {
             console.log('Определение местоположения…');
-            setStatus('Определение местоположения…');
             navigator.geolocation.getCurrentPosition(success, error);
         }
     }
@@ -111,7 +105,6 @@ function Weather(props) {
                 let array = res.data.list;
                 console.log("list:", array);
 
-                setTimestamps(array);
                 // сделаем расчет погоды на 24 часа из 9 таймстампов по 3 часа
                 const forecast_hours = get_24_hours(array.slice(0, 9));
                 setForecastHours(forecast_hours);
@@ -130,14 +123,38 @@ function Weather(props) {
     }
 
     let show_mode = <p>Прогноз на 5 дней:</p>;
-    if (mode==0) {
+    if (mode) {
         show_mode = <p>Прогноз на 24 часа:</p>;
     }
 
     return (
         <>
-            {/*<p> Выбран город {pref_city} </p>*/}
             {show_mode}
+            {mode ? (
+                <div className={'forecast_container'}>
+                    {forecast_hours ? (forecast_hours.map(period => (
+                            <div className={'forecast_hour'}>
+                                {period.hour}:00<br/>
+                                t={period.temp.toFixed(0)}° C<br/>
+                                clouds:{period.clouds}<br/>
+                                wind:{period.wind.toFixed(0)} m/sec<br/>
+                            </div>
+                        ))
+                    ) : null}
+                </div>
+            ) : (
+                <div className={'forecast_container'}>
+                    {forecast_days.map(day => (
+                        <div className={'forecast_hour'}>
+                            {day.day}<br/>
+                            t = {day.temp_min} - {day.temp_max}° C<br/>
+                            clouds: {day.clouds}<br/>
+                            wind: {day.wind_min} - {day.wind_max} m/sec<br/>
+                        </div>
+                    ))}
+                </div>
+            )
+            }
         </>
     );
 }
