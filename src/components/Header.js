@@ -6,6 +6,9 @@ const Header = (props) => {
     const pref_cities = props.pref_cities;
     const setPrefCity = props.setPrefCity;
 
+    const getCities=props.getCities;
+    const cities=getCities();
+
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = (e) => {
@@ -23,7 +26,7 @@ const Header = (props) => {
         <Dropdown
             open={open}
             trigger={<button onClick={handleOpen}>Выбрать город</button>}
-            menu={pref_cities.map(city => <button
+            menu={cities.map(city => <button
                     onClick={handleMenuClick}>{city}
                 </button>
             )}

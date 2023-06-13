@@ -24,9 +24,12 @@ function Weather(props) {
 
     const mode = props.mode;
     const setCityList = props.setCityList;
-    const pref_city = props.pref_city;
+    const getPrefCity=props.getPrefCity;
+    const pref_city = getPrefCity();
     const setPrefCity = props.setPrefCity;
 
+    const getCities=props.getCities;
+    const pref_cities=getCities();
 
     console.log(`mode=${mode}`);
     // Функция, выводящая текст об ошибке
@@ -66,8 +69,8 @@ function Weather(props) {
                 setPrefCity(res.data.city.name);
             }
             // если города еще нет в списке, то добавим
-            if (!props.pref_cities.includes(res.data.city.name)) {
-                setCityList([...props.pref_cities, res.data.city.name])
+            if (!pref_cities.includes(res.data.city.name)) {
+                setCityList([...pref_cities, res.data.city.name])
             }
         });
     }
@@ -75,7 +78,7 @@ function Weather(props) {
     console.log("Выбран город ", pref_city);
 
     // если город еще не задан
-    if (!props.city) {
+    if (!pref_city) {
         if ("geolocation" in navigator) {
             console.log("Geolocation available");
         } else {

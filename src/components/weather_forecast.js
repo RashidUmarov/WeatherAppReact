@@ -70,13 +70,14 @@ function get_days(array) {
     let current_day_name = '';
     const first_date = new Date(array[0].dt * 1000)
     const name_size='long'
-    let prev_day_name = first_date.toLocaleString("en", {weekday: name_size});
+    let prev_day_name = first_date.toLocaleString("en", {weekday: name_size},{ timeZone: 'UTC' });
     let day_count = 0;
     let clouds_sum = 0;
     let dayname = '';
     array.forEach(elem => {
             const date = new Date(elem.dt * 1000);
-            dayname = date.toLocaleString("en", {weekday: name_size});
+            dayname = date.toLocaleString("en", {weekday: name_size},{ timeZone: 'UTC' });
+            console.log(`day ${dayname}`);
             day_count++;
             // новый день недели
             if (dayname !== prev_day_name) {

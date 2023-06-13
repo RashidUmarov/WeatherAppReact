@@ -12,13 +12,20 @@ function App() {
     // режим показа - 24 часа или 5 дней
     const [mode, setMode] = useState(1);
 
+    const getCities = () => {
+        return(pref_cities);
+    }
+
+     const getPrefCity = () => {
+        return(pref_city);
+    }
 
     return (<div>
             <h1> Weather APP</h1>
             <p> Прогноз погоды для города {pref_city} </p>
-            <Header pref_cities={pref_cities} setPrefCity={setPrefCity}/>
-            <Weather pref_city={pref_city} setPrefCity={setPrefCity}
-                     pref_cities={pref_cities} setCityList={setCityList}
+            <Header setPrefCity={setPrefCity} getCities={getCities}/>
+            <Weather getPrefCity={getPrefCity} setPrefCity={setPrefCity}
+                     getCities={getCities} setCityList={setCityList}
                      mode={mode==0}
                      />
         </div>
