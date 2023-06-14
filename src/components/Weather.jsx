@@ -135,8 +135,8 @@ function Weather(props) {
             {/*{show_mode}*/}
             {mode ? (
                 <div className={'forecast_container'}>
-                    {forecast_hours ? (forecast_hours.map(period => (
-                            <div className={'forecast_hour'}>
+                    {forecast_hours ? (forecast_hours.map((period,index) => (
+                            <div className={'forecast_hour'} key={index}>
                                 {period.hour}:00<br/>
                                 t={period.temp.toFixed(0)}° C<br/>
                                 clouds:{period.clouds}<br/>
@@ -147,8 +147,8 @@ function Weather(props) {
                 </div>
             ) : (
                 <div className={'forecast_container'}>
-                    {forecast_days.map(day => (
-                        <div className={'forecast_hour'}>
+                    {forecast_days.map((day,index) => (
+                        <div className={'forecast_hour'} key={index}>
                             {day.day}<br/>
                             t = {day.temp_min} - {day.temp_max}° C<br/>
                             clouds: {day.clouds}<br/>
